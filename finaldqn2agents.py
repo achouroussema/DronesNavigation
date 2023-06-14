@@ -42,7 +42,7 @@ class Environment:
             # Calculate the reward based on the next state
             agent_reward = 0
             if next_state[agent_id] == [3, 4]:  # IOT Device
-                agent_reward = 30
+                agent_reward = 25
                 done = True
                 print("Data transmitted")
             elif next_state[agent_id] == [7, 2]:  # Obstacle
@@ -50,7 +50,7 @@ class Environment:
             elif next_state[agent_id] == [5, 3]:  # NFZ
                 agent_reward = -10
             else:
-                agent_reward = 0
+                agent_reward = -1
 
             rewards.append(agent_reward)
 
@@ -142,6 +142,7 @@ num_episodes = 15000
 max_steps = 100
 total_rewards = [0] * env.num_agents
 episode_rewards = []
+epsilon_list = []
 
 
 charge_percentages = [100.0] * env.num_agents  # Initialize charge percentages
@@ -170,6 +171,7 @@ for episode in range(num_episodes):
             agent.store_transition(states[agent_id], actions[agent_id], rewards[agent_id], next_state[agent_id], done, agent_id=agent_id)
             agent.update_q_values(agent_id)
             total_rewards[agent_id] += rewards[agent_id]
+            epsilon_list.append(epsilon)
 
         states = next_state
         step += 1
